@@ -1,14 +1,9 @@
 package net.pufferlab.motio.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.pufferlab.motio.tileentity.TileRotating;
 
@@ -64,8 +59,7 @@ public class BlockRotating extends BlockContainer {
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World worldIn, int x, int y, int z, int meta) {
-    }
+    public void onBlockDestroyedByPlayer(World worldIn, int x, int y, int z, int meta) {}
 
     @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {

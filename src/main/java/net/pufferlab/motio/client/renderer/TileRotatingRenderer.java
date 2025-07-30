@@ -11,10 +11,10 @@ import org.lwjgl.opengl.GL11;
 public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
     // Define the texture for your rotating block
-    private static final ResourceLocation TEXTURE = new ResourceLocation(
-        "minecraft:textures/blocks/planks_oak.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/blocks/planks_oak.png");
     private static final ResourceLocation TEXTURE_ENGINE = new ResourceLocation(
         "minecraft:textures/blocks/iron_block.png");
+
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
         TileRotating tile = (TileRotating) tileEntity;
@@ -46,7 +46,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // Bind your custom texture. This is important!
         // You can also bind the block's own texture map if you get its IIcon.
 
-        if(tile.isEngine()) {
+        if (tile.isEngine()) {
             this.bindTexture(TEXTURE_ENGINE);
         } else {
             this.bindTexture(TEXTURE);
@@ -57,7 +57,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // Disable lighting so the cube is always brightly lit
-        GL11.glDisable(GL11.GL_LIGHTING);
+        // GL11.glDisable(GL11.GL_LIGHTING);
 
         // Draw a simple textured cube
         // renderCube();

@@ -85,8 +85,8 @@ public class TileRotating extends TileEntity {
             vs.setSpeed(hSpeed);
         }
 
-        //visited.clear();
-        //queue.clear();
+        // visited.clear();
+        // queue.clear();
 
     }
 
