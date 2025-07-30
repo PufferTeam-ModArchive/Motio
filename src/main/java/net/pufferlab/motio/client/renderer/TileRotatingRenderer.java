@@ -32,7 +32,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         }
 
         boolean isGearbox = tile.isGearbox();
-        if(isGearbox) {
+        if (isGearbox) {
             renderCube();
         }
 
@@ -42,7 +42,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
             GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
         } else if (meta == 2 || meta == 5) {
             GL11.glRotatef(90, 0.0F, 0.0F, 1.0F);
-        } else if(meta == 3) {
+        } else if (meta == 3) {
             GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
         }
 
@@ -70,15 +70,15 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // renderCube();
 
         testRender();
-        if(meta == 3) {
+        if (meta == 3) {
             GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
             GL11.glRotatef(90, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(partialRotation, 0.0F, 1.0F, 0.0F);
             testRender();
         }
-        if(meta == 4 || meta == 5) {
+        if (meta == 4 || meta == 5) {
             GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
-            if(meta == 4) {
+            if (meta == 4) {
                 GL11.glRotatef(90, -1.0F, 0.0F, 0.0F);
             } else {
                 GL11.glRotatef(90, 0.0F, 0.0F, -1.0F);
@@ -101,7 +101,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         tessellator.startDrawingQuads();
 
         // Define the offset for the pole
-        final double offset = 0.25D; // 0.25 closer to the middle from each side
+        final double offset = 0.3D; // 0.25 closer to the middle from each side
 
         // Front face (+Z)
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
@@ -152,7 +152,6 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
     /**
      * Helper method to render a unit cube (1x1x1) with texture coordinates.
-     * The cube is centered at (0,0,0) and extends from -0.5 to +0.5 on each axis.
      */
     private void renderCube() {
         Tessellator tessellator = Tessellator.instance;

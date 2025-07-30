@@ -17,13 +17,14 @@ public class MotioBlocks {
     public static Block blockRotatingGearboxVertical;
 
     public static void preInit() {
-        blockRotating = new BlockRotating(Material.rock, false, false, -1).setBlockName("rotatingBlock") // Internal name
+        blockRotating = new BlockRotating(Material.rock, false, false, -1).setBlockName("rotatingBlock") // Internal
+                                                                                                         // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)
             .setStepSound(Block.soundTypeStone);
 
         blockRotatingEngine = new BlockRotating(Material.rock, true, false, -1).setBlockName("rotatingBlockEngine") // Internal
-                                                                                                         // name
+            // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)
             .setStepSound(Block.soundTypeStone);
@@ -34,7 +35,8 @@ public class MotioBlocks {
             .setHardness(2.0F)
             .setStepSound(Block.soundTypeStone);
 
-        blockRotatingGearboxVertical = new BlockRotating(Material.rock, false, true, 1).setBlockName("rotatingBlockGearboxVertical") // Internal
+        blockRotatingGearboxVertical = new BlockRotating(Material.rock, false, true, 1)
+            .setBlockName("rotatingBlockGearboxVertical") // Internal
             // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)

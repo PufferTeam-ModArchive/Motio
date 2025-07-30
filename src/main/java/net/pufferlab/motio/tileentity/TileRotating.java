@@ -124,63 +124,81 @@ public class TileRotating extends TileEntity {
         TileEntity teLeft = null;
         TileEntity teRight = null;
         if (blockMetadata == 0) {
-            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4
+                || world.getBlockMetadata(x, y + 1, z) == 5) {
                 teUp = world.getTileEntity(x, y + 1, z);
             }
-            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4
+                || world.getBlockMetadata(x, y - 1, z) == 5) {
                 teDown = world.getTileEntity(x, y - 1, z);
             }
         } else if (blockMetadata == 1) {
-            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3
+                || world.getBlockMetadata(x, y, z + 1) == 4) {
                 teUp = world.getTileEntity(x, y, z + 1);
             }
-            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3
+                || world.getBlockMetadata(x, y, z - 1) == 4) {
                 teDown = world.getTileEntity(x, y, z - 1);
             }
         } else if (blockMetadata == 2) {
-            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3
+                || world.getBlockMetadata(x + 1, y, z) == 5) {
                 teUp = world.getTileEntity(x + 1, y, z);
             }
-            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3
+                || world.getBlockMetadata(x - 1, y, z) == 5) {
                 teDown = world.getTileEntity(x - 1, y, z);
             }
-        } else if(blockMetadata == 3) {
-            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
+        } else if (blockMetadata == 3) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3
+                || world.getBlockMetadata(x, y, z + 1) == 4) {
                 teLeft = world.getTileEntity(x, y, z + 1);
             }
-            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3
+                || world.getBlockMetadata(x, y, z - 1) == 4) {
                 teRight = world.getTileEntity(x, y, z - 1);
             }
-            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3
+                || world.getBlockMetadata(x + 1, y, z) == 5) {
                 teUp = world.getTileEntity(x + 1, y, z);
             }
-            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3
+                || world.getBlockMetadata(x - 1, y, z) == 5) {
                 teDown = world.getTileEntity(x - 1, y, z);
             }
-        } else if(blockMetadata == 4) {
-            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
+        } else if (blockMetadata == 4) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4
+                || world.getBlockMetadata(x, y + 1, z) == 5) {
                 teUp = world.getTileEntity(x, y + 1, z);
             }
-            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4
+                || world.getBlockMetadata(x, y - 1, z) == 5) {
                 teDown = world.getTileEntity(x, y - 1, z);
             }
-            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3
+                || world.getBlockMetadata(x, y, z + 1) == 4) {
                 teLeft = world.getTileEntity(x, y, z + 1);
             }
-            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3
+                || world.getBlockMetadata(x, y, z - 1) == 4) {
                 teRight = world.getTileEntity(x, y, z - 1);
             }
-        } else if(blockMetadata == 5) {
-            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
+        } else if (blockMetadata == 5) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4
+                || world.getBlockMetadata(x, y + 1, z) == 5) {
                 teUp = world.getTileEntity(x, y + 1, z);
             }
-            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4
+                || world.getBlockMetadata(x, y - 1, z) == 5) {
                 teDown = world.getTileEntity(x, y - 1, z);
             }
-            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3
+                || world.getBlockMetadata(x + 1, y, z) == 5) {
                 teLeft = world.getTileEntity(x + 1, y, z);
             }
-            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3
+                || world.getBlockMetadata(x - 1, y, z) == 5) {
                 teRight = world.getTileEntity(x - 1, y, z);
             }
         }
@@ -191,10 +209,10 @@ public class TileRotating extends TileEntity {
         if (teDown instanceof TileRotating teDownTR) {
             connected.add(teDownTR);
         }
-        if(teRight instanceof TileRotating teRightTR) {
+        if (teRight instanceof TileRotating teRightTR) {
             connected.add(teRightTR);
         }
-        if(teLeft instanceof TileRotating teLeftTR) {
+        if (teLeft instanceof TileRotating teLeftTR) {
             connected.add(teLeftTR);
         }
 

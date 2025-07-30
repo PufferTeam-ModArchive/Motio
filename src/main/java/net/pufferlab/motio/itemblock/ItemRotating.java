@@ -13,6 +13,7 @@ import net.pufferlab.motio.tileentity.TileRotating;
 public class ItemRotating extends ItemBlock {
 
     BlockRotating block2;
+
     public ItemRotating(Block block) {
         super(block);
 
@@ -26,12 +27,12 @@ public class ItemRotating extends ItemBlock {
         int z2 = Utils.getBlockZ(side, z);
 
         boolean canBePlaced = false;
-        if(block2.getGearboxType() == 0) {
+        if (block2.getGearboxType() == 0) {
             if (place(stack, world, x2, y2, z2, this.field_150939_a, 3)) {
                 place(stack, world, x2, y2, z2, this.field_150939_a, 3);
                 canBePlaced = true;
             }
-        } else if(block2.getGearboxType() == 1) {
+        } else if (block2.getGearboxType() == 1) {
             if (place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionVerticalMeta(side))) {
                 place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionVerticalMeta(side));
                 canBePlaced = true;
