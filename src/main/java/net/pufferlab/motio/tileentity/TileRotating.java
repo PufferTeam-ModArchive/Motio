@@ -82,6 +82,14 @@ public class TileRotating extends TileEntity {
         }
 
         for (TileRotating vs : visited) {
+            if (this.needUpdate) {
+                if (world.isRemote) {
+                    vs.setRotation(this.getRotation());
+                }
+            }
+        }
+        this.needUpdate = false;
+        for (TileRotating vs : visited) {
             vs.setSpeed(hSpeed);
         }
 
