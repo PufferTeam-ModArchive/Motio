@@ -25,12 +25,25 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // x, y, z are the coordinates of the block's corner. We add 0.5 to center it.
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
+        if (tile.isEngine()) {
+            this.bindTexture(TEXTURE_ENGINE);
+        } else {
+            this.bindTexture(TEXTURE);
+        }
+
+        boolean isGearbox = tile.isGearbox();
+        if(isGearbox) {
+            renderCube();
+        }
+
         int meta = tile.getBlockMetadata();
         float speed = tile.getSpeed();
-        if (meta == 1) {
+        if (meta == 1 || meta == 4) {
             GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
-        } else if (meta == 2) {
+        } else if (meta == 2 || meta == 5) {
             GL11.glRotatef(90, 0.0F, 0.0F, 1.0F);
+        } else if(meta == 3) {
+            GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
         }
 
         float partialRotation = tile.rotation;
@@ -46,12 +59,6 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // Bind your custom texture. This is important!
         // You can also bind the block's own texture map if you get its IIcon.
 
-        if (tile.isEngine()) {
-            this.bindTexture(TEXTURE_ENGINE);
-        } else {
-            this.bindTexture(TEXTURE);
-        }
-
         // Enable alpha blending for transparency if your texture has it
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -63,6 +70,22 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // renderCube();
 
         testRender();
+        if(meta == 3) {
+            GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
+            GL11.glRotatef(90, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(partialRotation, 0.0F, 1.0F, 0.0F);
+            testRender();
+        }
+        if(meta == 4 || meta == 5) {
+            GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
+            if(meta == 4) {
+                GL11.glRotatef(90, -1.0F, 0.0F, 0.0F);
+            } else {
+                GL11.glRotatef(90, 0.0F, 0.0F, -1.0F);
+            }
+            GL11.glRotatef(partialRotation, 0.0F, 1.0F, 0.0F);
+            testRender();
+        }
 
         // Re-enable lighting
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -139,45 +162,45 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
         // Front face (+Z)
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, 0.5D, uMin, vMax);
-        tessellator.addVertexWithUV(0.5D, -0.5D, 0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(0.5D, 0.5D, 0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, 0.5D, uMin, vMin);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, 0.40D, uMin, vMax);
+        tessellator.addVertexWithUV(0.40D, -0.40D, 0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(0.40D, 0.40D, 0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, 0.40D, uMin, vMin);
 
         // Back face (-Z)
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, -0.5D, uMin, vMin);
-        tessellator.addVertexWithUV(0.5D, 0.5D, -0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(0.5D, -0.5D, -0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, -0.5D, uMin, vMax);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, -0.40D, uMin, vMin);
+        tessellator.addVertexWithUV(0.40D, 0.40D, -0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(0.40D, -0.40D, -0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, -0.40D, uMin, vMax);
 
         // Top face (+Y)
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, 0.5D, uMin, vMax);
-        tessellator.addVertexWithUV(0.5D, 0.5D, 0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(0.5D, 0.5D, -0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, -0.5D, uMin, vMin);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, 0.40D, uMin, vMax);
+        tessellator.addVertexWithUV(0.40D, 0.40D, 0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(0.40D, 0.40D, -0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, -0.40D, uMin, vMin);
 
         // Bottom face (-Y)
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, -0.5D, uMin, vMin);
-        tessellator.addVertexWithUV(0.5D, -0.5D, -0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(0.5D, -0.5D, 0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, 0.5D, uMin, vMax);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, -0.40D, uMin, vMin);
+        tessellator.addVertexWithUV(0.40D, -0.40D, -0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(0.40D, -0.40D, 0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, 0.40D, uMin, vMax);
 
         // Right face (+X)
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        tessellator.addVertexWithUV(0.5D, -0.5D, 0.5D, uMin, vMax);
-        tessellator.addVertexWithUV(0.5D, -0.5D, -0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(0.5D, 0.5D, -0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(0.5D, 0.5D, 0.5D, uMin, vMin);
+        tessellator.addVertexWithUV(0.40D, -0.40D, 0.40D, uMin, vMax);
+        tessellator.addVertexWithUV(0.40D, -0.40D, -0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(0.40D, 0.40D, -0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(0.40D, 0.40D, 0.40D, uMin, vMin);
 
         // Left face (-X)
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, 0.5D, uMin, vMin);
-        tessellator.addVertexWithUV(-0.5D, 0.5D, -0.5D, uMax, vMin);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, -0.5D, uMax, vMax);
-        tessellator.addVertexWithUV(-0.5D, -0.5D, 0.5D, uMin, vMax);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, 0.40D, uMin, vMin);
+        tessellator.addVertexWithUV(-0.40D, 0.40D, -0.40D, uMax, vMin);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, -0.40D, uMax, vMax);
+        tessellator.addVertexWithUV(-0.40D, -0.40D, 0.40D, uMin, vMax);
 
         tessellator.draw();
     }

@@ -7,12 +7,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.pufferlab.motio.Utils;
+import net.pufferlab.motio.block.BlockRotating;
 import net.pufferlab.motio.tileentity.TileRotating;
 
 public class ItemRotating extends ItemBlock {
 
+    BlockRotating block2;
     public ItemRotating(Block block) {
         super(block);
+
+        block2 = (BlockRotating) block;
     }
 
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
@@ -22,7 +26,17 @@ public class ItemRotating extends ItemBlock {
         int z2 = Utils.getBlockZ(side, z);
 
         boolean canBePlaced = false;
-        if (place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionMeta(side))) {
+        if(block2.getGearboxType() == 0) {
+            if (place(stack, world, x2, y2, z2, this.field_150939_a, 3)) {
+                place(stack, world, x2, y2, z2, this.field_150939_a, 3);
+                canBePlaced = true;
+            }
+        } else if(block2.getGearboxType() == 1) {
+            if (place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionVerticalMeta(side))) {
+                place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionVerticalMeta(side));
+                canBePlaced = true;
+            }
+        } else if (place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionMeta(side))) {
             place(stack, world, x2, y2, z2, this.field_150939_a, Utils.getDirectionMeta(side));
             canBePlaced = true;
         }

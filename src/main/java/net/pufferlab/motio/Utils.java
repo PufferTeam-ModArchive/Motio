@@ -24,6 +24,15 @@ public class Utils {
         return 0;
     }
 
+    public static int getDirectionVerticalMeta(int side) {
+        if (side == 2 || side == 3) {
+            return 4;
+        } else if (side == 4 || side == 5) {
+            return 5;
+        }
+        return 4;
+    }
+
     public static int getBlockX(int side, int x) {
         if (side == 4) {
             x--;

@@ -16,16 +16,20 @@ public class TileRotating extends TileEntity {
     public boolean needUpdate;
     public float hSpeed = 0.0F;
     boolean engine;
+    boolean gearbox;
+    int gearboxT;
 
     ArrayList<TileRotating> neighbours = new ArrayList<TileRotating>();
 
-    public TileRotating(Block block, boolean isEngine) {
+    public TileRotating(Block block) {
         BlockRotating block2 = (BlockRotating) block;
         this.rotation = 0.0F;
         this.needUpdate = block2.getNeedUpdate();
         this.baseSpeed = block2.getBaseSpeed();
         this.speed = baseSpeed;
-        this.engine = isEngine;
+        this.engine = block2.isEngine();
+        this.gearbox = block2.isGearbox();
+        this.gearboxT = block2.getGearboxType();
     }
 
     public void setNeedUpdate(boolean needUpdate) {
@@ -34,6 +38,10 @@ public class TileRotating extends TileEntity {
 
     public boolean isEngine() {
         return this.engine;
+    }
+
+    public boolean isGearbox() {
+        return this.gearbox;
     }
 
     public void setRotation(float rotation) {
@@ -113,26 +121,67 @@ public class TileRotating extends TileEntity {
         int blockMetadata = world.getBlockMetadata(x, y, z);
         TileEntity teUp = null;
         TileEntity teDown = null;
+        TileEntity teLeft = null;
+        TileEntity teRight = null;
         if (blockMetadata == 0) {
-            if (world.getBlockMetadata(x, y + 1, z) == 0) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
                 teUp = world.getTileEntity(x, y + 1, z);
             }
-            if (world.getBlockMetadata(x, y - 1, z) == 0) {
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
                 teDown = world.getTileEntity(x, y - 1, z);
             }
         } else if (blockMetadata == 1) {
-            if (world.getBlockMetadata(x, y, z + 1) == 1) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
                 teUp = world.getTileEntity(x, y, z + 1);
             }
-            if (world.getBlockMetadata(x, y, z - 1) == 1) {
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
                 teDown = world.getTileEntity(x, y, z - 1);
             }
         } else if (blockMetadata == 2) {
-            if (world.getBlockMetadata(x + 1, y, z) == 2) {
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
                 teUp = world.getTileEntity(x + 1, y, z);
             }
-            if (world.getBlockMetadata(x - 1, y, z) == 2) {
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
                 teDown = world.getTileEntity(x - 1, y, z);
+            }
+        } else if(blockMetadata == 3) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
+                teLeft = world.getTileEntity(x, y, z + 1);
+            }
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
+                teRight = world.getTileEntity(x, y, z - 1);
+            }
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
+                teUp = world.getTileEntity(x + 1, y, z);
+            }
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
+                teDown = world.getTileEntity(x - 1, y, z);
+            }
+        } else if(blockMetadata == 4) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
+                teUp = world.getTileEntity(x, y + 1, z);
+            }
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
+                teDown = world.getTileEntity(x, y - 1, z);
+            }
+            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z + 1) == 3 || world.getBlockMetadata(x, y, z + 1) == 4) {
+                teLeft = world.getTileEntity(x, y, z + 1);
+            }
+            if (world.getBlockMetadata(x, y, z - 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 3 || world.getBlockMetadata(x, y, z - 1) == 4) {
+                teRight = world.getTileEntity(x, y, z - 1);
+            }
+        } else if(blockMetadata == 5) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y + 1, z) == 4 || world.getBlockMetadata(x, y + 1, z) == 5) {
+                teUp = world.getTileEntity(x, y + 1, z);
+            }
+            if (world.getBlockMetadata(x, y - 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 4 || world.getBlockMetadata(x, y - 1, z) == 5) {
+                teDown = world.getTileEntity(x, y - 1, z);
+            }
+            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x + 1, y, z) == 3 || world.getBlockMetadata(x + 1, y, z) == 5) {
+                teLeft = world.getTileEntity(x + 1, y, z);
+            }
+            if (world.getBlockMetadata(x - 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 3 || world.getBlockMetadata(x - 1, y, z) == 5) {
+                teRight = world.getTileEntity(x - 1, y, z);
             }
         }
 
@@ -141,6 +190,12 @@ public class TileRotating extends TileEntity {
         }
         if (teDown instanceof TileRotating teDownTR) {
             connected.add(teDownTR);
+        }
+        if(teRight instanceof TileRotating teRightTR) {
+            connected.add(teRightTR);
+        }
+        if(teLeft instanceof TileRotating teLeftTR) {
+            connected.add(teLeftTR);
         }
 
         return connected;

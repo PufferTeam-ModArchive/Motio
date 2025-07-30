@@ -12,10 +12,14 @@ public class BlockRotating extends BlockContainer {
     public float baseSpeed;
     public boolean needUpdate;
     boolean engine;
+    boolean gearbox;
+    int gearboxT;
 
-    public BlockRotating(Material material, boolean isEngine) {
+    public BlockRotating(Material material, boolean isEngine, boolean isGearbox, int gearboxType) {
         super(material);
         engine = isEngine;
+        gearbox = isGearbox;
+        gearboxT = gearboxType;
         if (engine) {
             this.setBlockTextureName("minecraft:iron_block");
             this.baseSpeed = 2.0F;
@@ -23,6 +27,18 @@ public class BlockRotating extends BlockContainer {
             this.setBlockTextureName("minecraft:planks_oak");
             this.baseSpeed = 0.0F;
         }
+    }
+
+    public boolean isEngine() {
+        return this.engine;
+    }
+
+    public boolean isGearbox() {
+        return this.gearbox;
+    }
+
+    public int getGearboxType() {
+        return this.gearboxT;
     }
 
     public float getBaseSpeed() {
@@ -35,7 +51,7 @@ public class BlockRotating extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileRotating(this, engine);
+        return new TileRotating(this);
     }
 
     @Override
