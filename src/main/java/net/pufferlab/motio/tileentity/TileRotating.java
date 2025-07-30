@@ -1,6 +1,6 @@
 package net.pufferlab.motio.tileentity;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,8 +12,9 @@ public class TileRotating extends TileEntity {
 
     public float rotation = 0.0F; // The current rotation angle in degrees
     public float speed = 0.0F;
+    public float baseSpeed = 0.0F;
     public boolean needUpdate;
-
+    public float hSpeed = 0.0F;
     boolean engine;
 
     ArrayList<TileRotating> neighbours = new ArrayList<TileRotating>();
@@ -21,8 +22,9 @@ public class TileRotating extends TileEntity {
     public TileRotating(Block block, boolean isEngine) {
         BlockRotating block2 = (BlockRotating) block;
         this.rotation = 0.0F;
-        this.speed = block2.getBaseSpeed();
         this.needUpdate = block2.getNeedUpdate();
+        this.baseSpeed = block2.getBaseSpeed();
+        this.speed = baseSpeed;
         this.engine = isEngine;
     }
 
@@ -52,14 +54,40 @@ public class TileRotating extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (this.needUpdate) {
-            this.updateNeighbourSpeed(false);
-            this.updateNeighbourSpeed(true);
-
-            this.needUpdate = false;
-        } else {
-            this.rotation = (this.rotation + this.speed) % 360.0F;
+        updateNetwork();
+        if (worldObj.isRemote) {
+            this.rotation = (this.rotation + this.getSpeed()) % 360.0F;
         }
+    }
+
+    public void updateNetwork() {
+        World world = getWorldObj();
+        Queue<TileRotating> queue = new LinkedList<>();
+        Set<TileRotating> visited = new HashSet<>();
+        float hSpeed = 0.0F;
+        queue.offer(this);
+        visited.add(this);
+
+        while (!queue.isEmpty()) {
+            TileRotating currentTR = queue.poll();
+
+            hSpeed = Math.max(hSpeed, currentTR.baseSpeed);
+
+            for (TileRotating neighborTR : getConnectedTiles(currentTR, world)) {
+                if (!visited.contains(neighborTR)) {
+                    visited.add(neighborTR);
+                    queue.offer(neighborTR);
+                }
+            }
+        }
+
+        for (TileRotating vs : visited) {
+            vs.setSpeed(hSpeed);
+        }
+
+        //visited.clear();
+        //queue.clear();
+
     }
 
     public void updateEntitySpeed() {}
@@ -67,84 +95,47 @@ public class TileRotating extends TileEntity {
     public TileEntity neighbourUp;
     public TileEntity neighbourDown;
 
-    boolean canMove = false;
+    public Set<TileRotating> getConnectedTiles(TileRotating currentTR, World world) {
+        Set<TileRotating> connected = new HashSet<>();
 
-    public void updateNeighbourSpeed(boolean side) {
-        World world = getWorldObj();
-        int x = this.xCoord;
-        int y = this.yCoord;
-        int z = this.zCoord;
+        int x = currentTR.xCoord;
+        int y = currentTR.yCoord;
+        int z = currentTR.zCoord;
 
         int blockMetadata = world.getBlockMetadata(x, y, z);
         TileEntity teUp = null;
         TileEntity teDown = null;
-        TileEntity te = world.getTileEntity(x, y, z);
         if (blockMetadata == 0) {
-            if (world.getBlockMetadata(x, y + 1, z) == 0 || world.getBlockMetadata(x, y - 1, z) == 0) {
+            if (world.getBlockMetadata(x, y + 1, z) == 0) {
                 teUp = world.getTileEntity(x, y + 1, z);
+            }
+            if (world.getBlockMetadata(x, y - 1, z) == 0) {
                 teDown = world.getTileEntity(x, y - 1, z);
             }
         } else if (blockMetadata == 1) {
-            if (world.getBlockMetadata(x, y, z + 1) == 1 || world.getBlockMetadata(x, y, z - 1) == 1) {
+            if (world.getBlockMetadata(x, y, z + 1) == 1) {
                 teUp = world.getTileEntity(x, y, z + 1);
+            }
+            if (world.getBlockMetadata(x, y, z - 1) == 1) {
                 teDown = world.getTileEntity(x, y, z - 1);
             }
         } else if (blockMetadata == 2) {
-            if (world.getBlockMetadata(x + 1, y, z) == 2 || world.getBlockMetadata(x - 1, y, z) == 2) {
+            if (world.getBlockMetadata(x + 1, y, z) == 2) {
                 teUp = world.getTileEntity(x + 1, y, z);
+            }
+            if (world.getBlockMetadata(x - 1, y, z) == 2) {
                 teDown = world.getTileEntity(x - 1, y, z);
             }
         }
-        TileRotating tr = null;
-        TileRotating teUpTR = null;
-        TileRotating teDownTR = null;
-        float speedTR = 0.0F;
-        float speedUpTR = 0.0F;
-        float speedDownTR = 0.0F;
 
-        if (te instanceof TileRotating te2) {
-            tr = te2;
-            speedTR = tr.getSpeed();
-            if (tr.isEngine()) {
-                canMove = true;
-            }
+        if (teUp instanceof TileRotating teUpTR) {
+            connected.add(teUpTR);
         }
-        if (teUp instanceof TileRotating teUp2) {
-            teUpTR = teUp2;
-            speedUpTR = teUpTR.getSpeed();
-            if (teUpTR.isEngine()) {
-                canMove = true;
-            }
-        }
-        if (teDown instanceof TileRotating teDown2) {
-            teDownTR = teDown2;
-            speedDownTR = teDownTR.getSpeed();
-            if (teDownTR.isEngine()) {
-                canMove = true;
-            }
+        if (teDown instanceof TileRotating teDownTR) {
+            connected.add(teDownTR);
         }
 
-        if (side) {
-            if (teUpTR != null) {
-                if (speedUpTR < speedTR) {
-                    teUpTR.setSpeed(speedTR);
-                } else {
-                    tr.setSpeed(speedUpTR);
-                }
-
-                teUpTR.updateNeighbourSpeed(true);
-            }
-        } else {
-            if (teDownTR != null) {
-                if (speedDownTR < speedTR) {
-                    teDownTR.setSpeed(speedTR);
-                } else {
-                    tr.setSpeed(speedDownTR);
-                }
-
-                teDownTR.updateNeighbourSpeed(false);
-            }
-        }
+        return connected;
     }
 
     // Save the tile entity's data to NBT when the chunk is saved

@@ -12,8 +12,9 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
     // Define the texture for your rotating block
     private static final ResourceLocation TEXTURE = new ResourceLocation(
-        "rotatingblock:textures/blocks/rotating_block.png");
-
+        "minecraft:textures/blocks/planks_oak.png");
+    private static final ResourceLocation TEXTURE_ENGINE = new ResourceLocation(
+        "minecraft:textures/blocks/iron_block.png");
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
         TileRotating tile = (TileRotating) tileEntity;
@@ -44,7 +45,12 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
         // Bind your custom texture. This is important!
         // You can also bind the block's own texture map if you get its IIcon.
-        this.bindTexture(TEXTURE);
+
+        if(tile.isEngine()) {
+            this.bindTexture(TEXTURE_ENGINE);
+        } else {
+            this.bindTexture(TEXTURE);
+        }
 
         // Enable alpha blending for transparency if your texture has it
         GL11.glEnable(GL11.GL_BLEND);

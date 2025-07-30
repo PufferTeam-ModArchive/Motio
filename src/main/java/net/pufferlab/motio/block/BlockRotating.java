@@ -1,9 +1,14 @@
 package net.pufferlab.motio.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.pufferlab.motio.tileentity.TileRotating;
 
@@ -15,11 +20,12 @@ public class BlockRotating extends BlockContainer {
 
     public BlockRotating(Material material, boolean isEngine) {
         super(material);
-        this.setBlockTextureName("rotatingblock:rotating_block");
         engine = isEngine;
         if (engine) {
+            this.setBlockTextureName("minecraft:iron_block");
             this.baseSpeed = 2.0F;
         } else {
+            this.setBlockTextureName("minecraft:planks_oak");
             this.baseSpeed = 0.0F;
         }
     }
@@ -45,8 +51,6 @@ public class BlockRotating extends BlockContainer {
     @Override
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         TileRotating te = (TileRotating) worldIn.getTileEntity(x, y, z);
-
-        this.needUpdate = true;
         te.setNeedUpdate(true);
     }
 
@@ -54,8 +58,13 @@ public class BlockRotating extends BlockContainer {
     public void onBlockAdded(World worldIn, int x, int y, int z) {
         TileRotating te = (TileRotating) worldIn.getTileEntity(x, y, z);
         this.needUpdate = true;
+        te.setNeedUpdate(true);
 
         super.onBlockAdded(worldIn, x, y, z);
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World worldIn, int x, int y, int z, int meta) {
     }
 
     @Override
