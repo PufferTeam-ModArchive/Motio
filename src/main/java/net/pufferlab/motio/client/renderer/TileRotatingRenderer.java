@@ -21,9 +21,25 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix(); // Save the current OpenGL state
 
+        int meta = tile.getBlockMetadata();
+        float speed = tile.getSpeed();
         // Translate to the center of the block.
         // x, y, z are the coordinates of the block's corner. We add 0.5 to center it.
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        float tX = (float) x + 0.5F;
+        float tY = (float) y + 0.5F;
+        float tZ = (float) z + 0.5F;
+        if(tile.getGearboxType() == 2) {
+            if(meta == 0) {
+                tY = tY + 0.25F;
+            }
+            if(meta == 1) {
+                tZ = tZ + 0.25F;
+            }
+            if(meta == 2) {
+                tX = tX + 0.25F;
+            }
+        }
+        GL11.glTranslatef(tX, tY, tZ);
 
         if (tile.getEngineType() == 0) {
             this.bindTexture(TEXTURE_ENGINE);
@@ -33,11 +49,11 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
         boolean isGearbox = tile.isGearbox();
         if (isGearbox || (tile.getEngineType() == 0)) {
-            renderCube();
+            if((tile.getGearboxType() != 2)) {
+                renderCube();
+            }
         }
 
-        int meta = tile.getBlockMetadata();
-        float speed = tile.getSpeed();
         if (meta == 1 || meta == 4) {
             GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
         } else if (meta == 2 || meta == 5) {
@@ -69,7 +85,21 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         // Draw a simple textured cube
         // renderCube();
 
-        testRender();
+        if(tile.getGearboxType() == 2) {
+            testRender3();
+
+            float m = 1.0F;
+            if(meta == 2) {
+                m = -1.0F;
+            }
+            GL11.glTranslatef(0.0F, -0.5F * m, 0.0F);
+            GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
+            GL11.glRotatef(-partialRotation, 0.0F, 1.0F, 0.0F);
+
+            testRender3();
+        } else {
+            testRender();
+        }
         if (tile.getEngineType() == 1) {
             testRender2();
             GL11.glRotatef(30, 0.0F, 1.0F, 0.0F);
@@ -105,6 +135,67 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix(); // Restore the previous OpenGL state
+    }
+
+    private void testRender3() {
+        Tessellator tessellator = Tessellator.instance;
+
+        float uMin = 0.0F, uMax = 1.0F, vMin = 0.0F, vMax = 1.0F;
+        tessellator.startDrawingQuads();
+
+        // Define the offset for the pole
+        final double baseX = 0.5D;
+        final double baseY = 0.25D;
+        final double baseZ = 0.5D;
+        final double offsetX = 0.3D;
+        final double offsetZ = 0.3D;
+        final double offsetY = 0.0D;
+
+        // Front face (+Z)
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, baseZ - offsetZ, uMin, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, baseZ - offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, baseZ - offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, baseZ - offsetZ, uMin, vMin); // Adjusted X, Z
+
+        // Back face (-Z)
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, -baseZ + offsetZ, uMin, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, -baseZ + offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, -baseZ + offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, -baseZ + offsetZ, uMin, vMax); // Adjusted X, Z
+
+        // Top face (+Y)
+        // X and Z coordinates for the top face need to reflect the pole's narrower width
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, baseZ - offsetZ, uMin, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, baseZ - offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, -baseZ + offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, -baseZ + offsetZ, uMin, vMin); // Adjusted X, Z
+
+        // Bottom face (-Y)
+        // X and Z coordinates for the bottom face need to reflect the pole's narrower width
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, -baseZ + offsetZ, uMin, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, -baseZ + offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, baseZ - offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, baseZ - offsetZ, uMin, vMax); // Adjusted X, Z
+
+        // Right face (+X)
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, baseZ - offsetZ, uMin, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, -baseY + offsetY, -baseZ + offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, -baseZ + offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(baseX - offsetX, baseY - offsetY, baseZ - offsetZ, uMin, vMin); // Adjusted X, Z
+
+        // Left face (-X)
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, baseZ - offsetZ, uMin, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, baseY - offsetY, -baseZ + offsetZ, uMax, vMin); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, -baseZ + offsetZ, uMax, vMax); // Adjusted X, Z
+        tessellator.addVertexWithUV(-baseX + offsetX, -baseY + offsetY, baseZ - offsetZ, uMin, vMax); // Adjusted X, Z
+
+        tessellator.draw();
     }
 
     private void testRender2() {

@@ -49,6 +49,10 @@ public class TileRotating extends TileEntity {
         return this.engineT;
     }
 
+    public int getGearboxType() {
+        return this.gearboxT;
+    }
+
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }

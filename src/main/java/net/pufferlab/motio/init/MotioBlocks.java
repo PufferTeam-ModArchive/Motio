@@ -16,6 +16,7 @@ public class MotioBlocks {
     public static Block blockRotatingWaterwheel;
     public static Block blockRotatingGearbox;
     public static Block blockRotatingGearboxVertical;
+    public static Block blockRotatingGearshift;
 
     public static void preInit() {
         blockRotating = new BlockRotating(Material.wood, false, false, -1, -1).setBlockName("rotatingBlock") // Internal
@@ -50,12 +51,20 @@ public class MotioBlocks {
             .setHardness(2.0F)
             .setStepSound(Block.soundTypeWood);
 
+        blockRotatingGearshift = new BlockRotating(Material.wood, false, true, 2, -1)
+            .setBlockName("rotatingBlockGearshift") // Internal
+            // name
+            .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
+            .setHardness(2.0F)
+            .setStepSound(Block.soundTypeWood);
+
         // Register the block with Minecraft
         GameRegistry.registerBlock(blockRotating, ItemRotating.class, "rotatingBlock");
         GameRegistry.registerBlock(blockRotatingEngine, ItemRotating.class, "rotatingBlockEngine");
         GameRegistry.registerBlock(blockRotatingWaterwheel, ItemRotating.class, "rotatingBlockWaterwheel");
         GameRegistry.registerBlock(blockRotatingGearbox, ItemRotating.class, "rotatingBlockGearbox");
         GameRegistry.registerBlock(blockRotatingGearboxVertical, ItemRotating.class, "rotatingBlockGearboxVertical");
+        GameRegistry.registerBlock(blockRotatingGearshift, ItemRotating.class, "rotatingBlockGearshift");
         // argument is the unlocalized name
 
         // Register the Tile Entity
