@@ -145,7 +145,11 @@ public class TileRotating extends TileEntity {
             bs = -2.0F;
         }
 
-        this.baseSpeed = bs;
+        float m = 1.0F;
+        if(blockMetadata == 2) {
+            m = -1.0F;
+        }
+        this.baseSpeed = bs * m;
     }
 
     public void updateEntitySpeed() {}
