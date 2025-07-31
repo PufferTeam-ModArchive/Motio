@@ -3,6 +3,7 @@ package net.pufferlab.motio.tileentity;
 import java.util.*;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -18,8 +19,7 @@ public class TileRotating extends TileEntity {
     boolean engine;
     boolean gearbox;
     int gearboxT;
-
-    ArrayList<TileRotating> neighbours = new ArrayList<TileRotating>();
+    int engineT;
 
     public TileRotating(Block block) {
         BlockRotating block2 = (BlockRotating) block;
@@ -28,6 +28,7 @@ public class TileRotating extends TileEntity {
         this.baseSpeed = block2.getBaseSpeed();
         this.speed = baseSpeed;
         this.engine = block2.isEngine();
+        this.engineT = block2.getEngineType();
         this.gearbox = block2.isGearbox();
         this.gearboxT = block2.getGearboxType();
     }
@@ -42,6 +43,10 @@ public class TileRotating extends TileEntity {
 
     public boolean isGearbox() {
         return this.gearbox;
+    }
+
+    public int getEngineType() {
+        return this.engineT;
     }
 
     public void setRotation(float rotation) {
@@ -62,6 +67,9 @@ public class TileRotating extends TileEntity {
 
     @Override
     public void updateEntity() {
+        if (this.getEngineType() == 1) {
+            updateWaterwheelSpeed();
+        }
         updateNetwork();
         if (worldObj.isRemote) {
             this.rotation = (this.rotation + this.getSpeed()) % 360.0F;
@@ -79,7 +87,9 @@ public class TileRotating extends TileEntity {
         while (!queue.isEmpty()) {
             TileRotating currentTR = queue.poll();
 
-            hSpeed = Math.max(hSpeed, currentTR.baseSpeed);
+            if (Math.abs(hSpeed) < Math.abs(currentTR.baseSpeed)) {
+                hSpeed = currentTR.baseSpeed;
+            }
 
             for (TileRotating neighborTR : getConnectedTiles(currentTR, world)) {
                 if (!visited.contains(neighborTR)) {
@@ -104,6 +114,34 @@ public class TileRotating extends TileEntity {
         // visited.clear();
         // queue.clear();
 
+    }
+
+    public void updateWaterwheelSpeed() {
+        float bs = 0.0F;
+        int x = this.xCoord;
+        int y = this.yCoord;
+        int z = this.zCoord;
+
+        int x1 = x;
+        int z1 = z;
+        int x2 = x;
+        int z2 = z;
+        if (blockMetadata == 1) {
+            x1--;
+            x2++;
+        }
+        if (blockMetadata == 2) {
+            z1++;
+            z2--;
+        }
+        if (worldObj.getBlock(x1, y, z1) == Blocks.flowing_water || worldObj.getBlock(x1, y, z1) == Blocks.water) {
+            bs = 2.0F;
+        }
+        if (worldObj.getBlock(x2, y, z2) == Blocks.flowing_water || worldObj.getBlock(x2, y, z2) == Blocks.water) {
+            bs = -2.0F;
+        }
+
+        this.baseSpeed = bs;
     }
 
     public void updateEntitySpeed() {}

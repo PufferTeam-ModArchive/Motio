@@ -10,17 +10,19 @@ import net.pufferlab.motio.tileentity.TileRotating;
 public class BlockRotating extends BlockContainer {
 
     public float baseSpeed;
-    public boolean needUpdate;
+    public boolean needUpdate = true;
     boolean engine;
     boolean gearbox;
     int gearboxT;
+    int engineT;
 
-    public BlockRotating(Material material, boolean isEngine, boolean isGearbox, int gearboxType) {
+    public BlockRotating(Material material, boolean isEngine, boolean isGearbox, int gearboxType, int engineType) {
         super(material);
         engine = isEngine;
         gearbox = isGearbox;
         gearboxT = gearboxType;
-        if (engine) {
+        engineT = engineType;
+        if (engineT == 0) {
             this.setBlockTextureName("minecraft:iron_block");
             this.baseSpeed = 2.0F;
         } else {
@@ -41,8 +43,16 @@ public class BlockRotating extends BlockContainer {
         return this.gearboxT;
     }
 
+    public int getEngineType() {
+        return this.engineT;
+    }
+
     public float getBaseSpeed() {
         return this.baseSpeed;
+    }
+
+    public void setNeedUpdate(boolean needUpdate) {
+        this.needUpdate = needUpdate;
     }
 
     public boolean getNeedUpdate() {
@@ -61,15 +71,12 @@ public class BlockRotating extends BlockContainer {
 
     @Override
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
-        TileRotating te = (TileRotating) worldIn.getTileEntity(x, y, z);
-        te.setNeedUpdate(true);
+        this.needUpdate = true;
     }
 
     @Override
     public void onBlockAdded(World worldIn, int x, int y, int z) {
-        TileRotating te = (TileRotating) worldIn.getTileEntity(x, y, z);
         this.needUpdate = true;
-        te.setNeedUpdate(true);
 
         super.onBlockAdded(worldIn, x, y, z);
     }
@@ -79,8 +86,7 @@ public class BlockRotating extends BlockContainer {
 
     @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
-        TileRotating te = (TileRotating) worldIn.getTileEntity(x, y, z);
-        te.setNeedUpdate(true);
+        this.needUpdate = true;
 
         super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }

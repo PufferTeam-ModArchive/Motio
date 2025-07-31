@@ -13,38 +13,47 @@ public class MotioBlocks {
 
     public static Block blockRotating;
     public static Block blockRotatingEngine;
+    public static Block blockRotatingWaterwheel;
     public static Block blockRotatingGearbox;
     public static Block blockRotatingGearboxVertical;
 
     public static void preInit() {
-        blockRotating = new BlockRotating(Material.rock, false, false, -1).setBlockName("rotatingBlock") // Internal
-                                                                                                         // name
-            .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
-            .setHardness(2.0F)
-            .setStepSound(Block.soundTypeStone);
-
-        blockRotatingEngine = new BlockRotating(Material.rock, true, false, -1).setBlockName("rotatingBlockEngine") // Internal
+        blockRotating = new BlockRotating(Material.wood, false, false, -1, -1).setBlockName("rotatingBlock") // Internal
             // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)
-            .setStepSound(Block.soundTypeStone);
+            .setStepSound(Block.soundTypeWood);
 
-        blockRotatingGearbox = new BlockRotating(Material.rock, false, true, 0).setBlockName("rotatingBlockGearbox") // Internal
+        blockRotatingEngine = new BlockRotating(Material.rock, true, false, -1, 0).setBlockName("rotatingBlockEngine") // Internal
             // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)
-            .setStepSound(Block.soundTypeStone);
+            .setStepSound(Block.soundTypeMetal);
 
-        blockRotatingGearboxVertical = new BlockRotating(Material.rock, false, true, 1)
+        blockRotatingWaterwheel = new BlockRotating(Material.wood, true, false, -1, 1)
+            .setBlockName("rotatingBlockWaterwheel") // Internal
+            // name
+            .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
+            .setHardness(2.0F)
+            .setStepSound(Block.soundTypeWood);
+
+        blockRotatingGearbox = new BlockRotating(Material.wood, false, true, 0, -1).setBlockName("rotatingBlockGearbox") // Internal
+            // name
+            .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
+            .setHardness(2.0F)
+            .setStepSound(Block.soundTypeWood);
+
+        blockRotatingGearboxVertical = new BlockRotating(Material.wood, false, true, 1, -1)
             .setBlockName("rotatingBlockGearboxVertical") // Internal
             // name
             .setCreativeTab(CreativeTabs.tabBlock) // Assign to creative tab
             .setHardness(2.0F)
-            .setStepSound(Block.soundTypeStone);
+            .setStepSound(Block.soundTypeWood);
 
         // Register the block with Minecraft
         GameRegistry.registerBlock(blockRotating, ItemRotating.class, "rotatingBlock");
         GameRegistry.registerBlock(blockRotatingEngine, ItemRotating.class, "rotatingBlockEngine");
+        GameRegistry.registerBlock(blockRotatingWaterwheel, ItemRotating.class, "rotatingBlockWaterwheel");
         GameRegistry.registerBlock(blockRotatingGearbox, ItemRotating.class, "rotatingBlockGearbox");
         GameRegistry.registerBlock(blockRotatingGearboxVertical, ItemRotating.class, "rotatingBlockGearboxVertical");
         // argument is the unlocalized name
