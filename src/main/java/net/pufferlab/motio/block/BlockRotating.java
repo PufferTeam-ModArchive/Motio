@@ -13,13 +13,16 @@ public class BlockRotating extends BlockContainer {
     public boolean needUpdate = true;
     boolean engine;
     boolean gearbox;
+    boolean special;
     int gearboxT;
     int engineT;
 
-    public BlockRotating(Material material, boolean isEngine, boolean isGearbox, int gearboxType, int engineType) {
+    public BlockRotating(Material material, boolean isEngine, boolean isGearbox, boolean isSpecial, int gearboxType,
+        int engineType) {
         super(material);
         engine = isEngine;
         gearbox = isGearbox;
+        special = isSpecial;
         gearboxT = gearboxType;
         engineT = engineType;
         if (engineT == 0) {
@@ -37,6 +40,10 @@ public class BlockRotating extends BlockContainer {
 
     public boolean isGearbox() {
         return this.gearbox;
+    }
+
+    public boolean isSpecial() {
+        return this.special;
     }
 
     public int getGearboxType() {

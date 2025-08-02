@@ -18,6 +18,7 @@ public class TileRotating extends TileEntity {
     public float hSpeed = 0.0F;
     boolean engine;
     boolean gearbox;
+    boolean special;
     int gearboxT;
     int engineT;
 
@@ -31,6 +32,7 @@ public class TileRotating extends TileEntity {
         this.engineT = block2.getEngineType();
         this.gearbox = block2.isGearbox();
         this.gearboxT = block2.getGearboxType();
+        this.special = block2.isSpecial();
     }
 
     public void setNeedUpdate(boolean needUpdate) {
@@ -43,6 +45,10 @@ public class TileRotating extends TileEntity {
 
     public boolean isGearbox() {
         return this.gearbox;
+    }
+
+    public boolean isSpecial() {
+        return this.special;
     }
 
     public int getEngineType() {
@@ -74,9 +80,11 @@ public class TileRotating extends TileEntity {
         if (this.getEngineType() == 1) {
             updateWaterwheelSpeed();
         }
-        updateNetwork();
-        if (worldObj.isRemote) {
-            this.rotation = (this.rotation + this.getSpeed()) % 360.0F;
+        if (!isSpecial()) {
+            updateNetwork();
+            if (worldObj.isRemote) {
+                this.rotation = (this.rotation + this.getSpeed()) % 360.0F;
+            }
         }
     }
 
@@ -146,7 +154,7 @@ public class TileRotating extends TileEntity {
         }
 
         float m = 1.0F;
-        if(blockMetadata == 2) {
+        if (blockMetadata == 2) {
             m = -1.0F;
         }
         this.baseSpeed = bs * m;
