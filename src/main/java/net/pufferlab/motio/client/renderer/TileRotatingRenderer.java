@@ -85,51 +85,53 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
             GL11.glRotatef(-partialRotation, 0.0F, 1.0F, 0.0F);
 
             testRender3();
-        } else if(tile.isSpecial()) {
-        } else {
+        } else if (tile.isSpecial()) {} else {
             testRender();
         }
         if (tile.getEngineType() == 1) {
             double waterwheelSegment1 = 2.5D;
+            double waterwheelSegment1Y = 0.45D;
             double waterwheelSegment2 = 1.1D;
-
+            double waterwheelSegment2Y = 0.40D;
+            double waterwheelSegment3 = 1.0D;
+            double waterwheelSegment3Y = 0.45D;
             float m = 1.0F;
             if (meta == 2) {
                 m = -1.0F;
             }
-            
-            testRender2(waterwheelSegment1);
 
-                GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
-                GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-                testRender2(waterwheelSegment2);
-                GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
-
-            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment1);
-
-                GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
-                GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-                testRender2(waterwheelSegment2);
-                GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
-
-            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment1);
-
-                GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
-                GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-                testRender2(waterwheelSegment2);
-                GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
-
-            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment1);
+            testRender2(waterwheelSegment1, waterwheelSegment1Y);
 
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
+            GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
+
+            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment1, waterwheelSegment1Y);
+
+            GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
+            GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
+            GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
+
+            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment1, waterwheelSegment1Y);
+
+            GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
+            GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
+            GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
+
+            GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment1, waterwheelSegment1Y);
+
+            GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
+            GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
@@ -137,7 +139,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
@@ -145,40 +147,40 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
 
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
             GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-        
+
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
             GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-        
+
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
             GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
-        
+
             GL11.glTranslatef(-1.3F * m, 0.0F, 0.55F * m);
             GL11.glRotatef(22, 0.0F, 1.0F, 0.0F);
-            testRender2(waterwheelSegment2);
+            testRender2(waterwheelSegment2, waterwheelSegment2Y);
             GL11.glRotatef(-22, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(1.3F * m, 0.0F, -0.55F * m);
 
             /*
-            GL11.glRotatef(30, 0.0F, 1.0F, 0.0F);
-            testRender2();
-            GL11.glRotatef(30, 0.0F, 1.0F, 0.0F);
-            testRender2();
-            */
+             * GL11.glRotatef(30, 0.0F, 1.0F, 0.0F);
+             * testRender2();
+             * GL11.glRotatef(30, 0.0F, 1.0F, 0.0F);
+             * testRender2();
+             */
         }
         if (meta == 3) {
             GL11.glRotatef(partialRotation, 0.0F, -1.0F, 0.0F);
@@ -265,7 +267,7 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         tessellator.draw();
     }
 
-    private void testRender2(double offsetL) {
+    private void testRender2(double offsetL, double offsetY) {
         Tessellator tessellator = Tessellator.instance;
 
         float uMin = 0.0F, uMax = 1.0F, vMin = 0.0F, vMax = 1.0F;
@@ -274,47 +276,47 @@ public class TileRotatingRenderer extends TileEntitySpecialRenderer {
         tessellator.startDrawingQuads();
 
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, offsetL - offset, uMax, vMin); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, offsetL - offset, uMax, vMin); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
 
         // Back face (-Z)
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, -offsetL + offset, uMin, vMax); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, -offsetL + offset, uMin, vMax); // Adjusted Z to -1.0D
 
         // Top face (+Y)
         // X and Z coordinates for the top face need to reflect the pole's narrower width and extended length
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
 
         // Bottom face (-Y)
         // X and Z coordinates for the bottom face need to reflect the pole's narrower width and extended length
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, -offsetL + offset, uMin, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, offsetL - offset, uMax, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
 
         // Right face (+X)
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(0.5D - offset, -0.45D, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(0.5D - offset, 0.45D, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(0.5D - offset, -offsetY, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(0.5D - offset, offsetY, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
 
         // Left face (-X)
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, 0.45D, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
-        tessellator.addVertexWithUV(-0.5D + offset, -0.45D, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, offsetL - offset, uMin, vMin); // Adjusted Z to 1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, offsetY, -offsetL + offset, uMax, vMin); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, -offsetL + offset, uMax, vMax); // Adjusted Z to -1.0D
+        tessellator.addVertexWithUV(-0.5D + offset, -offsetY, offsetL - offset, uMin, vMax); // Adjusted Z to 1.0D
 
         tessellator.draw();
     }
