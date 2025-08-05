@@ -139,12 +139,12 @@ public class TileRotating extends TileEntity {
         int x2 = x;
         int z2 = z;
         if (blockMetadata == 1) {
-            x1--;
-            x2++;
+            x1 = x1 - 2;
+            x2 = x2 + 2;
         }
         if (blockMetadata == 2) {
-            z1++;
-            z2--;
+            z1 = z1 + 2;
+            z2 = z2 - 2;
         }
         if (worldObj.getBlock(x1, y, z1) == Blocks.flowing_water || worldObj.getBlock(x1, y, z1) == Blocks.water) {
             bs = 2.0F;
