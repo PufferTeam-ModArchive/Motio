@@ -1,5 +1,9 @@
 package net.pufferlab.motio;
 
+import java.util.ArrayList;
+
+import net.pufferlab.motio.tileentity.TileEntityMotion;
+
 public class Utils {
 
     public static char getDirection(int side) {
@@ -13,7 +17,7 @@ public class Utils {
         return 'y';
     }
 
-    public static int getDirectionMeta(int side) {
+    public static int getAxis(int side) {
         if (side == 0 || side == 1) {
             return 0;
         } else if (side == 2 || side == 3) {
@@ -61,5 +65,30 @@ public class Utils {
             z++;
         }
         return z;
+    }
+
+    public static boolean containsExactMatch(String[] array, String targetString) {
+        for (String element : array) {
+            if (element.equals(targetString)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean containsExactMatch(ArrayList<TileEntityMotion> tiles, TileEntityMotion tile) {
+        for (TileEntityMotion te : tiles) {
+            if (equals(te, tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean equals(TileEntityMotion tile, TileEntityMotion tile2) {
+        if ((tile.xCoord == tile2.xCoord) && (tile.yCoord == tile2.yCoord) && (tile.zCoord == tile2.zCoord)) {
+            return true;
+        }
+        return false;
     }
 }
