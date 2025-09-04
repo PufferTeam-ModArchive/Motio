@@ -20,6 +20,6 @@ public class BlockMotor extends BlockMotion {
 
     @Override
     public int getRenderType() {
-        return Motio.proxy.getAxleRenderID();
+        return Motio.proxy.getMotorRenderID();
     }
 }

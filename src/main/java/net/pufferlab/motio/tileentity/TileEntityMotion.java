@@ -1,22 +1,29 @@
 package net.pufferlab.motio.tileentity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.pufferlab.motio.network.DirectionMotion;
 import net.pufferlab.motio.network.NetworkMotionPropagate;
 
 public class TileEntityMotion extends TileEntity {
 
     public int facingMeta;
     public float speed;
+    public float speedSpread;
+    public boolean connectPos = false;
+    public boolean connectNeg = false;
+    public boolean connectPosOffset = false;
+    public boolean connectNegOffset = true;
     public boolean isRotating = true;
     public boolean initialize = true;
     public boolean update = true;
-    public final ForgeDirection[][] connections = new ForgeDirection[][] { { ForgeDirection.UP, ForgeDirection.DOWN },
-        { ForgeDirection.SOUTH, ForgeDirection.NORTH }, { ForgeDirection.EAST, ForgeDirection.WEST } };
 
     public final float[] connectionsModifier = new float[] { 1.0F, 1.0F, 1.0F };
 
@@ -26,11 +33,20 @@ public class TileEntityMotion extends TileEntity {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
 
-        this.facingMeta = tag.getInteger("facingMeta");
         this.initialize = tag.getBoolean("initialize");
         this.update = tag.getBoolean("update");
+        if (hasFacing()) {
+            this.facingMeta = tag.getInteger("facingMeta");
+        }
+        if (hasGears()) {
+            this.connectPos = tag.getBoolean("connectPos");
+            this.connectNeg = tag.getBoolean("connectNeg");
+            this.connectPosOffset = tag.getBoolean("connectPosOffset");
+            this.connectNegOffset = tag.getBoolean("connectNegOffset");
+        }
         if (isRotating) {
             this.speed = tag.getFloat("speed");
+            this.speedSpread = tag.getFloat("speedSpread");
         }
     }
 
@@ -38,11 +54,20 @@ public class TileEntityMotion extends TileEntity {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
-        tag.setInteger("facingMeta", this.facingMeta);
         tag.setBoolean("initialize", this.initialize);
         tag.setBoolean("update", this.update);
+        if (hasFacing()) {
+            tag.setInteger("facingMeta", this.facingMeta);
+        }
+        if (hasGears()) {
+            tag.setBoolean("connectPos", this.connectPos);
+            tag.setBoolean("connectNeg", this.connectNeg);
+            tag.setBoolean("connectPosOffset", this.connectPosOffset);
+            tag.setBoolean("connectNegOffset", this.connectNegOffset);
+        }
         if (isRotating) {
             tag.setFloat("speed", this.speed);
+            tag.setFloat("speedSpread", this.speedSpread);
         }
     }
 
@@ -53,6 +78,12 @@ public class TileEntityMotion extends TileEntity {
 
     public void setFacingMeta(int meta) {
         this.facingMeta = meta;
+        updateTEData();
+    }
+
+    public void setConnectFlag(boolean pos, boolean neg) {
+        this.connectPos = pos;
+        this.connectNeg = neg;
         updateTEData();
     }
 
@@ -74,39 +105,65 @@ public class TileEntityMotion extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound dataTag = new NBTTagCompound();
+        NBTTagCompound tag = new NBTTagCompound();
 
-        dataTag.setInteger("facingMeta", this.facingMeta);
-        dataTag.setBoolean("update", this.update);
+        tag.setBoolean("update", this.update);
+        if (hasFacing()) {
+            tag.setInteger("facingMeta", this.facingMeta);
+        }
+        if (hasGears()) {
+            tag.setBoolean("connectPos", this.connectPos);
+            tag.setBoolean("connectNeg", this.connectNeg);
+            tag.setBoolean("connectPosOffset", this.connectPosOffset);
+            tag.setBoolean("connectNegOffset", this.connectNegOffset);
+        }
         if (isRotating) {
-            dataTag.setFloat("speed", this.speed);
+            tag.setFloat("speed", this.speed);
+            tag.setFloat("speedSpread", this.speedSpread);
         }
 
-        return (Packet) new S35PacketUpdateTileEntity(
-            this.xCoord,
-            this.yCoord,
-            this.zCoord,
-            this.blockMetadata,
-            dataTag);
+        return (Packet) new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, this.blockMetadata, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-        NBTTagCompound nbtData = packet.func_148857_g();
-        this.facingMeta = nbtData.getInteger("facingMeta");
-        this.update = nbtData.getBoolean("update");
-        if (isRotating) {
-            this.speed = nbtData.getFloat("speed");
+        NBTTagCompound tag = packet.func_148857_g();
+        this.update = tag.getBoolean("update");
+        if (hasFacing()) {
+            this.facingMeta = tag.getInteger("facingMeta");
         }
+        if (hasGears()) {
+            this.connectPos = tag.getBoolean("connectPos");
+            this.connectNeg = tag.getBoolean("connectNeg");
+            this.connectPosOffset = tag.getBoolean("connectPosOffset");
+            this.connectNegOffset = tag.getBoolean("connectNegOffset");
+        }
+        if (isRotating) {
+            this.speed = tag.getFloat("speed");
+            this.speedSpread = tag.getFloat("speedSpread");
+        }
+    }
+
+    public ArrayList<ForgeDirection> getConnections() {
+        ArrayList<ForgeDirection> connections = new ArrayList<>();
+        if (hasFacing()) {
+            if (hasAxisPlacement()) {
+                connections.addAll(Arrays.asList(DirectionMotion.axisDirections[facingMeta]));
+            } else {
+                connections.add(ForgeDirection.getOrientation(facingMeta));
+            }
+        }
+
+        return connections;
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
 
-        if (!initialize) {
+        if (this.initialize) {
             this.initialize();
-            initialize = false;
+            this.initialize = false;
         }
 
         if (this.update) {
@@ -120,6 +177,14 @@ public class TileEntityMotion extends TileEntity {
     }
 
     public boolean hasAxisPlacement() {
+        return true;
+    }
+
+    public boolean hasFacing() {
+        return true;
+    }
+
+    public boolean hasGears() {
         return true;
     }
 

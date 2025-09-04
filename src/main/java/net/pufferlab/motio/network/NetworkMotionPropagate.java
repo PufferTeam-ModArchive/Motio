@@ -16,6 +16,11 @@ public class NetworkMotionPropagate {
             te.setSpeed(network.maxSpeed);
         }
 
+        if (tile.connectPos) {
+            if (tile.facingMeta == 0) {
+
+            }
+        }
     }
 
     public static NetworkMotion getNetwork(TileEntityMotion tile, NetworkMotion network) {
@@ -33,16 +38,22 @@ public class NetworkMotionPropagate {
 
     public static ArrayList<TileEntityMotion> getConnectedTiles(TileEntityMotion tile) {
         ArrayList<TileEntityMotion> list = new ArrayList<>();
-        int meta = tile.facingMeta;
-        ForgeDirection[] validConnections = tile.connections[meta];
         World world = tile.getWorldObj();
         int x = tile.xCoord;
         int y = tile.yCoord;
         int z = tile.zCoord;
-        for (ForgeDirection direction : validConnections) {
-            TileEntity te2 = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
-            if (te2 instanceof TileEntityMotion te3) {
-                list.add(te3);
+        for (ForgeDirection direction : tile.getConnections()) {
+            int nX = direction.offsetX;
+            int nY = direction.offsetY;
+            int nZ = direction.offsetZ;
+            TileEntity nTileTE = world.getTileEntity(x + nX, y + nY, z + nZ);
+            if (nTileTE instanceof TileEntityMotion nTile) {
+                for (ForgeDirection nDirection : nTile.getConnections()) {
+                    ForgeDirection connected = nDirection.getOpposite();
+                    if (direction.equals(connected)) {
+                        list.add(nTile);
+                    }
+                }
             }
         }
 

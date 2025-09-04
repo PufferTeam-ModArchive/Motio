@@ -25,4 +25,8 @@ public class CommonProxy {
     public int getAxleRenderID() {
         return 0;
     }
+
+    public int getMotorRenderID() {
+        return 0;
+    }
 }
